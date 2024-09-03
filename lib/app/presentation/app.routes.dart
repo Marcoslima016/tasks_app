@@ -21,6 +21,7 @@ class AppRoutes extends IAppRoutes {
   @override
   List<AppScreen> pages = [
     const TasksScreen(),
+    const CreateTaskScreen(),
   ];
 
   /// Gera a rota referente a uma chamada feita

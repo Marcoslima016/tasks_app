@@ -11,8 +11,6 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Color primaryColor = AppTheme.colors.primary;
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: AppTheme.colors.surface,
       statusBarIconBrightness: Brightness.light,
@@ -27,6 +25,7 @@ class AppView extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Aplicativo Tasks',
           theme: ThemeData(
+            useMaterial3: false,
             scaffoldBackgroundColor: AppTheme.colors.background,
             colorScheme: ColorScheme(
               brightness: Brightness.light,

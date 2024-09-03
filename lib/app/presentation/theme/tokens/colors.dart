@@ -32,10 +32,10 @@ class ColorsLight implements IThemeColorsTokens {
   final Color surface = const Color.fromARGB(255, 255, 255, 255);
 
   @override
-  Color get onSurface => const Color.fromARGB(255, 28, 28, 28);
+  Color get onSurface => const Color.fromARGB(255, 57, 57, 57);
 
   @override
-  final Color background = const Color.fromARGB(255, 250, 250, 250);
+  final Color background = const Color.fromARGB(255, 253, 253, 253);
 
   @override
   final Color onBackground = const Color.fromARGB(255, 250, 250, 250);
