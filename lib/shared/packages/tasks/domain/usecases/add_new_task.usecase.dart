@@ -18,7 +18,7 @@ class AddNewTask implements IAddNewTask {
     try {
       await tasksRepository.addNewTask(payload: payload);
       List<Task> updatedTasksList = await tasksRepository.getAllTasks();
-      tasksPresenter.setLoadedState(tasksList: updatedTasksList);
+      await tasksPresenter.setLoadedState(tasksList: updatedTasksList);
     } catch (e) {
       rethrow;
     }
