@@ -31,7 +31,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     return AppBar(
       centerTitle: false,
       title: Text(
-        "Criar nova tareffa",
+        "Criar nova tarefa",
         style: TextStyle(
           fontFamily: "Figtree",
           fontWeight: FontWeight.w600,
@@ -55,7 +55,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           children: [
             Column(
               children: [
-                SizedBox(height: 0.12.sh),
+                SizedBox(height: 0.11.sh),
                 MTextInput(
                   hintText: "Titulo",
                   controller: controller.inputTitle,
@@ -69,13 +69,19 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
             ),
 
             //
-            Padding(
-              padding: EdgeInsets.only(bottom: 24.sp),
-              child: ABoxButton.primary(
-                onClick: () async {},
-                text: "Criar tarefa",
-                active: true,
-              ),
+
+            ValueListenableBuilder(
+              valueListenable: controller,
+              builder: (context, state, child) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 24.sp),
+                  child: ABoxButton.primary(
+                    onClick: () async {},
+                    text: "Criar tarefa",
+                    active: state is CompleteState ? true : false,
+                  ),
+                );
+              },
             ),
           ],
         ),

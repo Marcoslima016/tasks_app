@@ -5,7 +5,7 @@ import 'package:tasks_app/lib.exports.dart';
 class TasksController extends ValueNotifier<ITasksState> {
   ValueNotifier<List<Task>> tasksList = ValueNotifier([]);
 
-  late TasksDependencies dependencies;
+  late final TasksDependencies dependencies;
 
   static TasksController get I => GetIt.I.get<TasksController>();
 

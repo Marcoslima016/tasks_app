@@ -67,7 +67,7 @@ class MTextInput extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: borderRadius,
           borderSide: BorderSide(
-            color: Color.fromARGB(255, 174, 174, 174),
+            color: Color.fromARGB(255, 204, 204, 204),
             width: 1.4.sp,
           ),
         ),
