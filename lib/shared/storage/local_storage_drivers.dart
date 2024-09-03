@@ -58,10 +58,19 @@ class SharedPreferencesDriver implements ILocalStorageDriver {
     if (data != "") {
       try {
         List decoded = jsonDecode(data);
-        List<Map<String, dynamic>> result = decoded.map((x) {
-          return json.decode(x) as Map<String, dynamic>;
-        }).toList();
-        return result;
+        if (decoded.first is String) {
+          List<Map<String, dynamic>> result = decoded.map((x) {
+            return json.decode(x) as Map<String, dynamic>;
+          }).toList();
+          return result;
+        } else if (decoded.first is Map) {
+          List<Map<String, dynamic>> result = decoded.map((x) {
+            return x as Map<String, dynamic>;
+          }).toList();
+          return result;
+        } else {
+          return [];
+        }
       } catch (e) {
         return [];
       }

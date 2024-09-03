@@ -57,7 +57,6 @@ class _TasksScreenState extends State<TasksScreen> {
   }
 
   Widget _buildBody() {
-    // return const TasksList();
-    return Container();
+    return const TasksList();
   }
 }

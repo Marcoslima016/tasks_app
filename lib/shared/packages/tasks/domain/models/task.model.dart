@@ -11,7 +11,7 @@ class Task {
     required this.title,
     required this.description,
     required this.dateTimeCreation,
-    required this.done,
+    this.done = false,
   }) {
     if (id != null) {
       this.id = id;
@@ -25,7 +25,7 @@ class Task {
       'id': id,
       'title': title,
       'description': description,
-      'dateTimeCreation': dateTimeCreation.millisecondsSinceEpoch,
+      'dateTimeCreation': dateTimeCreation.toIso8601String(),
       'done': done,
     };
   }
@@ -35,7 +35,7 @@ class Task {
       id: map['id'],
       title: map['title'] ?? '',
       description: map['description'] ?? '',
-      dateTimeCreation: DateTime.fromMillisecondsSinceEpoch(map['dateTimeCreation']),
+      dateTimeCreation: DateTime.parse(map['dateTimeCreation']),
       done: map['done'] ?? false,
     );
   }

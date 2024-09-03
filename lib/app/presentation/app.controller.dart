@@ -8,6 +8,8 @@ abstract class AppPresenter {
     required String route,
     bool replaceCurrentRoute = false,
   });
+
+  Future pop(BuildContext context);
 }
 
 class AppController implements AppPresenter {
@@ -40,5 +42,10 @@ class AppController implements AppPresenter {
     } else {
       Navigator.of(Get.context!).pushNamed(route);
     }
+  }
+
+  @override
+  Future pop(BuildContext context) async {
+    Navigator.of(context).pop();
   }
 }

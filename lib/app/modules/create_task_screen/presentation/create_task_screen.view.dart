@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasks_app/lib.exports.dart';
 
+import 'create_task_screen.controller.dart';
+
 class CreateTaskScreen extends StatefulWidget with AppScreen {
   const CreateTaskScreen({super.key});
 
@@ -15,6 +17,8 @@ class CreateTaskScreen extends StatefulWidget with AppScreen {
 }
 
 class _CreateTaskScreenState extends State<CreateTaskScreen> {
+  CreateTaskScreenController controller = CreateTaskScreenController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +31,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     return AppBar(
       centerTitle: false,
       title: Text(
-        "Criar nova tareffa",
+        "Criar nova tarefa",
         style: TextStyle(
           fontFamily: "Figtree",
           fontWeight: FontWeight.w600,
@@ -36,13 +40,54 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         ),
       ),
       elevation: 0,
-      leading: Container(),
       leadingWidth: 0,
       backgroundColor: AppTheme.colors.surface,
     );
   }
 
   Widget _buildBody() {
-    return Container();
+    return Container(
+      width: 1.sw,
+      padding: EdgeInsets.symmetric(horizontal: 24.sp),
+      child: Form(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                SizedBox(height: 0.11.sh),
+                MTextInput(
+                  hintText: "Titulo",
+                  controller: controller.inputTitle,
+                ),
+                SizedBox(height: 45.sp),
+                MTextInput(
+                  hintText: "Descrição",
+                  controller: controller.inputDescription,
+                ),
+              ],
+            ),
+
+            //
+
+            ValueListenableBuilder(
+              valueListenable: controller,
+              builder: (context, state, child) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 24.sp),
+                  child: ABoxButton.primary(
+                    onClick: () async {
+                      controller.onTapCreate(context);
+                    },
+                    text: "Criar tarefa",
+                    active: state is CompleteState ? true : false,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

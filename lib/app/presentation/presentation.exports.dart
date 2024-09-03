@@ -1,5 +1,4 @@
-export 'app.controller.dart'; 
-export 'app.routes.dart'; 
-export 'app.view.dart'; 
-export 'presentation.exports.dart'; 
-export './theme/theme.exports.dart'; 
+export 'app.controller.dart';
+export 'app.routes.dart';
+export 'app.view.dart';
+export './theme/theme.exports.dart';

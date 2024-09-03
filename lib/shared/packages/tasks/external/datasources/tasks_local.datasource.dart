@@ -22,4 +22,30 @@ class TasksLocalDatasource implements ITasksDatasource {
       rethrow;
     }
   }
+
+  @override
+  Future<Map<String, dynamic>> addNewTask({
+    required Map<String, dynamic> data,
+  }) async {
+    try {
+      List<Map<String, dynamic>> allTasks = await getAllTasks();
+
+      Map<String, dynamic> newTask = {
+        "title": data["title"],
+        "description": data["description"],
+        "dateTimeCreation": DateTime.now().toIso8601String(),
+      };
+
+      allTasks.add(newTask);
+
+      await storage.putList(
+        key: storageTag,
+        list: allTasks,
+      );
+
+      return newTask;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
