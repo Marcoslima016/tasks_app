@@ -19,8 +19,11 @@ class TasksDependencies {
 
   late final AppController appController;
 
+  late final TasksController tasksController;
+
   TasksDependencies({
     required this.appController,
+    required this.tasksController,
     ITasksRepository? tasksRepository,
     ITasksDatasource? tasksDatasource,
     IInitTasks? usecaseInitTasks,
@@ -48,7 +51,12 @@ class TasksDependencies {
       () => _usecaseOnTapGoToCreateTask ?? OnTapGoToCreateTask(appPresenter: appController),
     );
     GetIt.I.registerFactory<IAddNewTask>(
-      () => _usecaseAddNewTask ?? AddNewTask(tasksRepository: tasksRepository),
+      () =>
+          _usecaseAddNewTask ??
+          AddNewTask(
+            tasksRepository: tasksRepository,
+            tasksPresenter: tasksController,
+          ),
     );
   }
 }

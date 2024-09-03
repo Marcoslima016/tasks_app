@@ -6,16 +6,19 @@ abstract class IAddNewTask {
 
 class AddNewTask implements IAddNewTask {
   final ITasksRepository tasksRepository;
+  final TasksPresenter tasksPresenter;
 
   AddNewTask({
     required this.tasksRepository,
+    required this.tasksPresenter,
   });
 
   @override
   Future call({required PayloadNewTask payload}) async {
     try {
-      Task newTask = await tasksRepository.addNewTask(payload: payload);
-      return newTask;
+      await tasksRepository.addNewTask(payload: payload);
+      List<Task> updatedTasksList = await tasksRepository.getAllTasks();
+      tasksPresenter.setLoadedState(tasksList: updatedTasksList);
     } catch (e) {
       rethrow;
     }
