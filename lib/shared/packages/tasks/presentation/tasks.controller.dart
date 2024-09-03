@@ -22,6 +22,7 @@ class TasksController extends ValueNotifier<ITasksState> with TasksPresenter {
 
   Future onTapGoToCreateTask() => value.onTapGoToCreateTask(this);
 
+  @override
   Future addNewTaskToList(PayloadNewTask payload) async => value.addNewTask(payload);
 
   @override

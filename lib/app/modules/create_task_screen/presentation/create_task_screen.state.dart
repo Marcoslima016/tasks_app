@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'package:tasks_app/lib.exports.dart';
 
@@ -16,25 +17,31 @@ abstract class ICreateTaskScreenState {
     }
   }
 
-  Future onTapCreate(CreateTaskScreenController controller) async {}
+  Future onTapCreate(
+    CreateTaskScreenController controller,
+    BuildContext context,
+  ) async {}
 }
 
 class FillState extends ICreateTaskScreenState {
   @override
-  Future onTapCreate(CreateTaskScreenController controller) async {
+  Future onTapCreate(
+    CreateTaskScreenController controller,
+    BuildContext context,
+  ) async {
     if (kDebugMode) print("Formulario em estado 'Fill'. Não é possível avançar");
   }
 }
 
 class CompleteState extends ICreateTaskScreenState {
   @override
-  Future onTapCreate(CreateTaskScreenController controller) async {
+  Future onTapCreate(
+    CreateTaskScreenController controller,
+    BuildContext context,
+  ) async {
     try {
-      await TasksController.I.addNewTaskToList(
-        PayloadNewTask(
-          title: controller.inputTitle.text,
-          description: controller.inputDescription.text,
-        ),
+      await controller.dependencies.usecaseOnTapCreateTask(
+        context,
       );
     } catch (e) {
       rethrow;

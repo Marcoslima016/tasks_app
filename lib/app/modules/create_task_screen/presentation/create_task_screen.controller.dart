@@ -7,6 +7,8 @@ class CreateTaskScreenController extends ValueNotifier<ICreateTaskScreenState> i
   String get getInputTitleText => inputTitle.text;
 
   TextEditingController inputDescription = TextEditingController();
+  @override
+  String get getInputDescriptionText => inputDescription.text;
 
   late final CreateTaskScreenDependencies dependencies;
   CreateTaskScreenController({
@@ -24,5 +26,5 @@ class CreateTaskScreenController extends ValueNotifier<ICreateTaskScreenState> i
     inputDescription.addListener(() => value.onInputUpdate(this));
   }
 
-  Future onTapCreate() => value.onTapCreate(this);
+  Future onTapCreate(BuildContext context) => value.onTapCreate(this, context);
 }

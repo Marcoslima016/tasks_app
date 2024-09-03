@@ -77,7 +77,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   padding: EdgeInsets.only(bottom: 24.sp),
                   child: ABoxButton.primary(
                     onClick: () async {
-                      controller.onTapCreate();
+                      controller.onTapCreate(context);
                     },
                     text: "Criar tarefa",
                     active: state is CompleteState ? true : false,
