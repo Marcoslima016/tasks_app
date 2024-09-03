@@ -14,7 +14,8 @@ class AddNewTask implements IAddNewTask {
   @override
   Future call({required PayloadNewTask payload}) async {
     try {
-      await tasksRepository.addNewTask(payload: payload);
+      Task newTask = await tasksRepository.addNewTask(payload: payload);
+      return newTask;
     } catch (e) {
       rethrow;
     }

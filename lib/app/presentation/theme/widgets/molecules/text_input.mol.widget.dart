@@ -51,7 +51,7 @@ class MTextInput extends StatelessWidget {
               hintText,
               style: TextStyle(
                 fontSize: 20.h,
-                color: Color.fromARGB(255, 186, 186, 186),
+                color: const Color.fromARGB(255, 186, 186, 186),
                 fontWeight: FontWeight.w400,
               ),
             ),

@@ -24,7 +24,7 @@ class TasksRepository implements ITasksRepository {
   }
 
   @override
-  Future addNewTask({
+  Future<Task> addNewTask({
     required PayloadNewTask payload,
   }) async {
     try {
@@ -34,7 +34,11 @@ class TasksRepository implements ITasksRepository {
           "description": payload.description,
         },
       );
-      var p = "";
+      return Task(
+        title: response["title"],
+        description: response["description"],
+        dateTimeCreation: DateTime.parse(response["dateTimeCreation"]),
+      );
     } catch (e) {
       rethrow;
     }
