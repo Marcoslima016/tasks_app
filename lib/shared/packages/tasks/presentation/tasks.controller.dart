@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tasks_app/lib.exports.dart';
 
-import '../tasks.exports.dart';
-
 class TasksController extends ValueNotifier<ITasksState> {
   ValueNotifier<List<Task>> tasksList = ValueNotifier([]);
 
