@@ -5,7 +5,6 @@ class ThemeTextStylesTokens {
   const ThemeTextStylesTokens();
 
   static const TextStyle _parent = TextStyle(
-    // fontFamily: "Figtree",
     fontFamily: "Figtree",
   );
 
@@ -56,8 +55,8 @@ class ThemeTextStylesTokens {
   static ThemeTextStyle headingRegular = ThemeTextStyle.style(
     _parent.copyWith(
       fontSize: 16,
-      fontWeight: FontWeight.w900,
-      color: Colors.grey[200],
+      fontWeight: FontWeight.w800,
+      color: const Color.fromARGB(255, 21, 21, 21),
     ),
   );
 
@@ -85,7 +84,7 @@ class ThemeTextStylesTokens {
       fontSize: 14,
       fontWeight: FontWeight.w300,
       // height: 1.18,
-      color: Colors.grey[400],
+      color: const Color.fromARGB(255, 21, 21, 21),
     ),
   );
 
@@ -114,7 +113,7 @@ class ThemeTextStylesTokens {
       fontSize: 12,
       fontWeight: FontWeight.w300,
       height: 1.18,
-      color: Colors.grey[500],
+      color: const Color.fromARGB(255, 206, 206, 206),
     ),
   );
 
