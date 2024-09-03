@@ -51,7 +51,7 @@ class MTextInput extends StatelessWidget {
               hintText,
               style: TextStyle(
                 fontSize: 20.h,
-                color: Color.fromARGB(255, 213, 213, 213),
+                color: Color.fromARGB(255, 186, 186, 186),
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -61,13 +61,13 @@ class MTextInput extends StatelessWidget {
         floatingLabelBehavior: FloatingLabelBehavior.always,
         hintStyle: TextStyle(
           fontSize: 13.sp,
-          color: Color.fromARGB(255, 191, 191, 191),
+          color: const Color.fromARGB(255, 191, 191, 191),
           fontWeight: FontWeight.w400,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: borderRadius,
           borderSide: BorderSide(
-            color: Color.fromARGB(255, 204, 204, 204),
+            color: const Color.fromARGB(255, 234, 234, 234),
             width: 1.4.sp,
           ),
         ),

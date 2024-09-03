@@ -14,6 +14,9 @@ class TasksDependencies {
   late final IOnTapGoToCreateTask? _usecaseOnTapGoToCreateTask;
   IOnTapGoToCreateTask get usecaseOnTapGoToCreateTask => GetIt.I.get<IOnTapGoToCreateTask>();
 
+  late final IAddNewTask? _usecaseAddNewTask;
+  IAddNewTask get usecaseAddNewTask => GetIt.I.get<IAddNewTask>();
+
   late final AppController appController;
 
   TasksDependencies({
@@ -22,11 +25,13 @@ class TasksDependencies {
     ITasksDatasource? tasksDatasource,
     IInitTasks? usecaseInitTasks,
     IOnTapGoToCreateTask? usecaseOnTapGoToCreateTask,
+    IAddNewTask? usecaseAddNewTask,
   }) {
     _tasksRepository = tasksRepository;
     _tasksDatasource = tasksDatasource;
     _usecaseInitTasks = usecaseInitTasks;
     _usecaseOnTapGoToCreateTask = usecaseOnTapGoToCreateTask;
+    _usecaseAddNewTask = usecaseAddNewTask;
   }
 
   bind() {
@@ -41,6 +46,9 @@ class TasksDependencies {
     );
     GetIt.I.registerFactory<IOnTapGoToCreateTask>(
       () => _usecaseOnTapGoToCreateTask ?? OnTapGoToCreateTask(appPresenter: appController),
+    );
+    GetIt.I.registerFactory<IAddNewTask>(
+      () => _usecaseAddNewTask ?? AddNewTask(tasksRepository: tasksRepository),
     );
   }
 }

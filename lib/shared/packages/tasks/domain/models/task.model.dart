@@ -11,7 +11,7 @@ class Task {
     required this.title,
     required this.description,
     required this.dateTimeCreation,
-    required this.done,
+    this.done = false,
   }) {
     if (id != null) {
       this.id = id;

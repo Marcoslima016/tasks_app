@@ -24,7 +24,5 @@ class CreateTaskScreenController extends ValueNotifier<ICreateTaskScreenState> i
     inputDescription.addListener(() => value.onInputUpdate(this));
   }
 
-  Future onTapCreate() async {
-    //
-  }
+  Future onTapCreate() => value.onTapCreate(this);
 }

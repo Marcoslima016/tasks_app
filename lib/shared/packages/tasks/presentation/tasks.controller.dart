@@ -19,11 +19,9 @@ class TasksController extends ValueNotifier<ITasksState> {
     );
   }
 
-  Future initialize() async {
-    value.initialize(this);
-  }
+  Future initialize() async => value.initialize(this);
 
   Future onTapGoToCreateTask() => value.onTapGoToCreateTask(this);
 
-  Future addNewTaskToList() async {}
+  Future addNewTaskToList(PayloadNewTask payload) async => value.addNewTask(payload);
 }

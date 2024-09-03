@@ -8,6 +8,8 @@ abstract class ITasksState {
   Future initialize(TasksController controller) async {}
 
   Future onTapGoToCreateTask(TasksController controller) async {}
+
+  Future addNewTask(PayloadNewTask payload) async {}
 }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -54,6 +56,11 @@ class TasksLoaded extends ITasksState {
   @override
   Future onTapGoToCreateTask(TasksController controller) async {
     await controller.dependencies.usecaseOnTapGoToCreateTask();
+  }
+
+  @override
+  Future addNewTask(PayloadNewTask payload) async {
+    await controller.dependencies.usecaseAddNewTask(payload: payload);
   }
 }
 
