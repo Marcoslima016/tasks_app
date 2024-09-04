@@ -4,21 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:tasks_app/lib.exports.dart';
 import 'app.dependencies.dart';
 
-abstract class AppPresenter {
-  Future navigateToRoute({
-    required String route,
-    bool replaceCurrentRoute = false,
-  });
-
-  Future pop(BuildContext context);
-
-  Future showMessageDialog({
-    required BuildContext context,
-    required String title,
-    required String text,
-  });
-}
-
 class AppController implements AppPresenter {
   static AppController get I {
     if (GetIt.I.isRegistered<AppController>()) {
