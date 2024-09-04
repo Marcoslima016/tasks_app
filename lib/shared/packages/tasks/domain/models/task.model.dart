@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 class Task {
-  late final int id;
+  final int id;
   String title;
   String description;
   final DateTime dateTimeCreation;
@@ -21,16 +23,18 @@ class Task {
   }
 
   Task({
-    int? id,
+    required this.id,
     required this.title,
     required this.description,
     required this.dateTimeCreation,
     this.done = false,
-  }) {
-    if (id != null) {
-      this.id = id;
+  });
+
+  Color get doneFlagColor {
+    if (done) {
+      return const Color.fromARGB(255, 27, 60, 170);
     } else {
-      this.id = DateTime.now().millisecondsSinceEpoch;
+      return Colors.red;
     }
   }
 

@@ -108,6 +108,15 @@ class ThemeTextStylesTokens {
 
   //-------------------------------------------- LABEL --------------------------------------------
 
+  static ThemeTextStyle labelRegular = ThemeTextStyle.style(
+    _parent.copyWith(
+      fontSize: 14,
+      fontWeight: FontWeight.w300,
+      height: 1.18,
+      color: const Color.fromARGB(255, 206, 206, 206),
+    ),
+  );
+
   static ThemeTextStyle labelSmall = ThemeTextStyle.style(
     _parent.copyWith(
       fontSize: 12,

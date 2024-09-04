@@ -35,9 +35,23 @@ class TasksRepository implements ITasksRepository {
         },
       );
       return Task(
+        id: response["id"],
         title: response["title"],
         description: response["description"],
         dateTimeCreation: DateTime.parse(response["dateTimeCreation"]),
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future concludeTask({required Task task}) async {
+    try {
+      await datasource.concludeTask(
+        data: <String, dynamic>{
+          "id": task.id,
+        },
       );
     } catch (e) {
       rethrow;

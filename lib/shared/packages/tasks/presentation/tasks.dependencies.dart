@@ -47,10 +47,16 @@ class TasksDependencies {
     usecaseAddNewTask ??= AddNewTask(
       tasksRepository: GetIt.I.get(),
       tasksPresenter: tasksController,
+      usecaseGetAllTasks: GetIt.I.get(),
     );
     GetIt.I.registerFactory<IAddNewTask>(() => usecaseAddNewTask!);
 
-    usecaseConcludeTask ??= ConcludeTask(appPresenter: appController);
+    usecaseConcludeTask ??= ConcludeTask(
+      appPresenter: appController,
+      tasksPresenter: tasksController,
+      tasksRepository: GetIt.I.get(),
+      usecaseGetAllTasks: GetIt.I.get(),
+    );
     GetIt.I.registerFactory<IConcludeTask>(() => usecaseConcludeTask!);
   }
 }

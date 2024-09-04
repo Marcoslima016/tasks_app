@@ -29,9 +29,11 @@ class TasksLocalDatasource implements ITasksDatasource {
       List<Map<String, dynamic>> allTasks = await getAllTasks();
 
       Map<String, dynamic> newTask = {
+        "id": DateTime.now().millisecondsSinceEpoch,
         "title": data["title"],
         "description": data["description"],
         "dateTimeCreation": DateTime.now().toIso8601String(),
+        "done": false,
       };
 
       allTasks.add(newTask);
@@ -42,6 +44,26 @@ class TasksLocalDatasource implements ITasksDatasource {
       );
 
       return newTask;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future concludeTask({required Map<String, dynamic> data}) async {
+    try {
+      List<Map<String, dynamic>> allTasks = await getAllTasks();
+
+      for (Map<String, dynamic> task in allTasks) {
+        if (task["id"] == data["id"]) {
+          task["done"] = true;
+        }
+      }
+
+      await storage.putList(
+        key: storageTag,
+        list: allTasks,
+      );
     } catch (e) {
       rethrow;
     }

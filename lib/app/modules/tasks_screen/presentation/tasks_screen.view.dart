@@ -17,6 +17,8 @@ class TasksScreen extends StatefulWidget with AppScreen {
 class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
+    widget.injectScreenContext(context);
+
     return Scaffold(
       appBar: _buildAppBar(),
       body: _buildBody(),
