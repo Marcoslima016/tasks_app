@@ -5,16 +5,18 @@ abstract class IInitTasks {
 }
 
 class InitTasks implements IInitTasks {
-  ITasksRepository tasksRepository;
+  final ITasksRepository tasksRepository;
+  final IGetAllTasks usecaseGetAllTasks;
 
   InitTasks({
     required this.tasksRepository,
+    required this.usecaseGetAllTasks,
   });
 
   @override
   Future<List<Task>> call() async {
     try {
-      return await tasksRepository.getAllTasks();
+      return await usecaseGetAllTasks();
     } catch (e) {
       rethrow;
     }

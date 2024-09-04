@@ -4,6 +4,7 @@ import 'package:tasks_app/lib.exports.dart';
 class TasksDependencies {
   late ITasksDatasource? tasksDatasource;
   late ITasksRepository? tasksRepository;
+  late IGetAllTasks? usecaseGetAllTasks;
   late IInitTasks? usecaseInitTasks;
   late IOnTapGoToCreateTask? usecaseOnTapGoToCreateTask;
   late IAddNewTask? usecaseAddNewTask;
@@ -15,6 +16,7 @@ class TasksDependencies {
     required this.tasksController,
     this.tasksRepository,
     this.tasksDatasource,
+    this.usecaseGetAllTasks,
     this.usecaseInitTasks,
     this.usecaseOnTapGoToCreateTask,
     this.usecaseAddNewTask,
@@ -27,7 +29,13 @@ class TasksDependencies {
     tasksRepository ??= TasksRepository(datasource: GetIt.I.get());
     GetIt.I.registerFactory<ITasksRepository>(() => tasksRepository!);
 
-    usecaseInitTasks ??= InitTasks(tasksRepository: GetIt.I.get());
+    usecaseGetAllTasks ??= GetAllTasks(tasksRepository: GetIt.I.get());
+    GetIt.I.registerFactory<IGetAllTasks>(() => usecaseGetAllTasks!);
+
+    usecaseInitTasks ??= InitTasks(
+      tasksRepository: GetIt.I.get(),
+      usecaseGetAllTasks: GetIt.I.get(),
+    );
     GetIt.I.registerFactory<IInitTasks>(() => usecaseInitTasks!);
 
     usecaseOnTapGoToCreateTask ??= OnTapGoToCreateTask(appPresenter: appController);
