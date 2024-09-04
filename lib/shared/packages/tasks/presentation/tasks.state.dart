@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../tasks.exports.dart';
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -11,7 +13,10 @@ abstract class ITasksState {
 
   Future addNewTask(PayloadNewTask payload) async {}
 
-  Future concludeTask(Task task) async {}
+  Future concludeTask(
+    Task task,
+    BuildContext context,
+  ) async {}
 }
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -67,9 +72,12 @@ class TasksLoaded extends ITasksState {
   }
 
   @override
-  Future concludeTask(Task task) async {
+  Future concludeTask(Task task, BuildContext context) async {
     controller.value = ReloadingTasks(controller: controller);
-    //  await
+    await controller.dependencies!.usecaseConcludeTask!(
+      context: context,
+      task: task,
+    );
   }
 }
 

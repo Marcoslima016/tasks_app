@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tasks_app/lib.exports.dart';
 import 'app.dependencies.dart';
 
 abstract class AppPresenter {
@@ -10,6 +11,12 @@ abstract class AppPresenter {
   });
 
   Future pop(BuildContext context);
+
+  Future showMessageDialog({
+    required BuildContext context,
+    required String title,
+    required String text,
+  });
 }
 
 class AppController implements AppPresenter {
@@ -45,7 +52,21 @@ class AppController implements AppPresenter {
   }
 
   @override
-  Future pop(BuildContext context) async {
+  Future pop(
+    BuildContext context,
+  ) async {
     Navigator.of(context).pop();
+  }
+
+  @override
+  Future showMessageDialog({
+    required BuildContext context,
+    required String title,
+    required String text,
+  }) async {
+    AppDialog.message(
+      title: title,
+      text: text,
+    ).show(context: context);
   }
 }

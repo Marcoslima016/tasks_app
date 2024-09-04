@@ -2,14 +2,16 @@ import 'package:get_it/get_it.dart';
 import 'package:tasks_app/lib.exports.dart';
 
 class TasksDependencies {
+  late final AppController appController;
+  late final TasksController tasksController;
+
   late ITasksDatasource? tasksDatasource;
   late ITasksRepository? tasksRepository;
   late IGetAllTasks? usecaseGetAllTasks;
   late IInitTasks? usecaseInitTasks;
   late IOnTapGoToCreateTask? usecaseOnTapGoToCreateTask;
   late IAddNewTask? usecaseAddNewTask;
-  late final AppController appController;
-  late final TasksController tasksController;
+  late IConcludeTask? usecaseConcludeTask;
 
   TasksDependencies({
     required this.appController,
@@ -20,6 +22,7 @@ class TasksDependencies {
     this.usecaseInitTasks,
     this.usecaseOnTapGoToCreateTask,
     this.usecaseAddNewTask,
+    this.usecaseConcludeTask,
   });
 
   bind() {
@@ -45,7 +48,9 @@ class TasksDependencies {
       tasksRepository: GetIt.I.get(),
       tasksPresenter: tasksController,
     );
-
     GetIt.I.registerFactory<IAddNewTask>(() => usecaseAddNewTask!);
+
+    usecaseConcludeTask ??= ConcludeTask(appPresenter: appController);
+    GetIt.I.registerFactory<IConcludeTask>(() => usecaseConcludeTask!);
   }
 }

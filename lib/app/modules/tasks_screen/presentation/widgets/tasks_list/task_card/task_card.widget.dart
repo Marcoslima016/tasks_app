@@ -54,7 +54,7 @@ class TaskCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               AText.headingRegular(task.title),
-              const TaskCardButtonsArea(),
+              TaskCardButtonsArea(task: task),
             ],
           ),
           SizedBox(height: 4.sp),
