@@ -2,20 +2,15 @@ import 'package:get_it/get_it.dart';
 import 'package:tasks_app/lib.exports.dart';
 
 class TasksDependencies {
-  late final ITasksDatasource? _tasksDatasource;
-  ITasksDatasource get tasksDatasource => GetIt.I.get<ITasksDatasource>();
+  late ITasksDatasource? tasksDatasource;
 
-  late final ITasksRepository? _tasksRepository;
-  ITasksRepository get tasksRepository => GetIt.I.get<ITasksRepository>();
+  late ITasksRepository? tasksRepository;
 
-  late final IInitTasks? _usecaseInitTasks;
-  IInitTasks get usecaseInit => GetIt.I.get<IInitTasks>();
+  late IInitTasks? usecaseInitTasks;
 
-  late final IOnTapGoToCreateTask? _usecaseOnTapGoToCreateTask;
-  IOnTapGoToCreateTask get usecaseOnTapGoToCreateTask => GetIt.I.get<IOnTapGoToCreateTask>();
+  late IOnTapGoToCreateTask? usecaseOnTapGoToCreateTask;
 
-  late final IAddNewTask? _usecaseAddNewTask;
-  IAddNewTask get usecaseAddNewTask => GetIt.I.get<IAddNewTask>();
+  late IAddNewTask? usecaseAddNewTask;
 
   late final AppController appController;
 
@@ -24,39 +19,31 @@ class TasksDependencies {
   TasksDependencies({
     required this.appController,
     required this.tasksController,
-    ITasksRepository? tasksRepository,
-    ITasksDatasource? tasksDatasource,
-    IInitTasks? usecaseInitTasks,
-    IOnTapGoToCreateTask? usecaseOnTapGoToCreateTask,
-    IAddNewTask? usecaseAddNewTask,
-  }) {
-    _tasksRepository = tasksRepository;
-    _tasksDatasource = tasksDatasource;
-    _usecaseInitTasks = usecaseInitTasks;
-    _usecaseOnTapGoToCreateTask = usecaseOnTapGoToCreateTask;
-    _usecaseAddNewTask = usecaseAddNewTask;
-  }
+    this.tasksRepository,
+    this.tasksDatasource,
+    this.usecaseInitTasks,
+    this.usecaseOnTapGoToCreateTask,
+    this.usecaseAddNewTask,
+  });
 
   bind() {
-    GetIt.I.registerFactory<ITasksDatasource>(
-      () => _tasksDatasource ?? TasksLocalDatasource(storage: SharedPreferencesDriver()),
+    tasksDatasource ??= TasksLocalDatasource(storage: SharedPreferencesDriver());
+    GetIt.I.registerFactory<ITasksDatasource>(() => tasksDatasource!);
+
+    tasksRepository ??= TasksRepository(datasource: GetIt.I.get());
+    GetIt.I.registerFactory<ITasksRepository>(() => tasksRepository!);
+
+    usecaseInitTasks ??= InitTasks(tasksRepository: GetIt.I.get());
+    GetIt.I.registerFactory<IInitTasks>(() => usecaseInitTasks!);
+
+    usecaseOnTapGoToCreateTask ??= OnTapGoToCreateTask(appPresenter: appController);
+    GetIt.I.registerFactory<IOnTapGoToCreateTask>(() => usecaseOnTapGoToCreateTask!);
+
+    usecaseAddNewTask ??= AddNewTask(
+      tasksRepository: GetIt.I.get(),
+      tasksPresenter: tasksController,
     );
-    GetIt.I.registerFactory<ITasksRepository>(
-      () => _tasksRepository ?? TasksRepository(datasource: tasksDatasource),
-    );
-    GetIt.I.registerFactory<IInitTasks>(
-      () => _usecaseInitTasks ?? InitTasks(tasksRepository: tasksRepository),
-    );
-    GetIt.I.registerFactory<IOnTapGoToCreateTask>(
-      () => _usecaseOnTapGoToCreateTask ?? OnTapGoToCreateTask(appPresenter: appController),
-    );
-    GetIt.I.registerFactory<IAddNewTask>(
-      () =>
-          _usecaseAddNewTask ??
-          AddNewTask(
-            tasksRepository: tasksRepository,
-            tasksPresenter: tasksController,
-          ),
-    );
+
+    GetIt.I.registerFactory<IAddNewTask>(() => usecaseAddNewTask!);
   }
 }

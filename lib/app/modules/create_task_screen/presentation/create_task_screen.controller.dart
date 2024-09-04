@@ -10,14 +10,14 @@ class CreateTaskScreenController extends ValueNotifier<ICreateTaskScreenState> i
   @override
   String get getInputDescriptionText => inputDescription.text;
 
-  late final CreateTaskScreenDependencies dependencies;
+  late CreateTaskScreenDependencies? dependencies;
   CreateTaskScreenController({
-    CreateTaskScreenDependencies? dependencies,
+    this.dependencies,
   }) : super(FillState()) {
-    this.dependencies = dependencies ??= CreateTaskScreenDependencies(
+    dependencies ??= CreateTaskScreenDependencies(
       controller: this,
     );
-    dependencies.bind();
+    dependencies!.bind();
     _listenInputsUpdates();
   }
 

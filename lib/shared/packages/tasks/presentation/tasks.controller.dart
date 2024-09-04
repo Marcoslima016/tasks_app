@@ -3,16 +3,15 @@ import 'package:get_it/get_it.dart';
 import 'package:tasks_app/lib.exports.dart';
 
 class TasksController extends ValueNotifier<ITasksState> with TasksPresenter {
-  late final TasksDependencies dependencies;
+  late TasksDependencies? dependencies;
 
   static TasksController get I => GetIt.I.get<TasksController>();
 
   TasksController({
     required AppController appController,
-    TasksDependencies? dependencies,
+    this.dependencies,
   }) : super(InitialState()) {
-    GetIt.I.registerSingleton<TasksController>(this);
-    this.dependencies = dependencies ??= TasksDependencies(
+    dependencies ??= TasksDependencies(
       appController: appController,
       tasksController: this,
     );

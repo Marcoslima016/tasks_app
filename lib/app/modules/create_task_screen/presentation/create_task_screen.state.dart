@@ -9,7 +9,7 @@ abstract class ICreateTaskScreenState {
   Future onInputUpdate(
     CreateTaskScreenController controller,
   ) async {
-    bool formValidated = await controller.dependencies.usecaseValidateFormOnInputUpdate();
+    bool formValidated = await controller.dependencies!.usecaseValidateFormOnInputUpdate!();
     if (formValidated) {
       controller.value = CompleteState();
     } else {
@@ -40,7 +40,7 @@ class CompleteState extends ICreateTaskScreenState {
     BuildContext context,
   ) async {
     try {
-      await controller.dependencies.usecaseOnTapCreateTask(
+      await controller.dependencies!.usecaseOnTapCreateTask!(
         context,
       );
     } catch (e) {
