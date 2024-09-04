@@ -1,7 +1,5 @@
 import 'package:tasks_app/lib.exports.dart';
 
-import '../../tasks.exports.dart';
-
 class TasksLocalDatasource implements ITasksDatasource {
   final ILocalStorageDriver storage;
 

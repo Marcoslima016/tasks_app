@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tasks_app/lib.exports.dart';
+import 'app.dependencies.dart';
 
 abstract class AppPresenter {
   Future navigateToRoute({
@@ -17,19 +17,19 @@ class AppController implements AppPresenter {
     if (GetIt.I.isRegistered<AppController>()) {
       return GetIt.I.get<AppController>();
     } else {
-      GetIt.I.registerSingleton<AppController>(AppController());
-      return GetIt.I.get<AppController>();
+      return AppController();
     }
   }
 
-  late final TasksController tasksController;
+  AppDependencies dependencies = AppDependencies();
 
   AppController() {
-    tasksController = TasksController(appController: this);
+    GetIt.I.registerSingleton<AppController>(this);
   }
 
-  Future init() async {
-    tasksController.initialize();
+  Future initialize() async {
+    dependencies.bind();
+    dependencies.tasksController!.initialize();
   }
 
   @override

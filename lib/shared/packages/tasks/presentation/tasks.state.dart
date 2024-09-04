@@ -19,8 +19,8 @@ class InitialState extends ITasksState {
   Future initialize(TasksController controller) async {
     try {
       controller.value = BootingTasks(controller: controller);
-      controller.dependencies.bind();
-      List<Task> tasksList = await controller.dependencies.usecaseInit();
+      controller.dependencies!.bind();
+      List<Task> tasksList = await controller.dependencies!.usecaseInitTasks!();
       controller.value = TasksLoaded(
         controller: controller,
         tasksList: tasksList,
@@ -55,13 +55,13 @@ class TasksLoaded extends ITasksState {
 
   @override
   Future onTapGoToCreateTask(TasksController controller) async {
-    await controller.dependencies.usecaseOnTapGoToCreateTask();
+    await controller.dependencies!.usecaseOnTapGoToCreateTask!();
   }
 
   @override
   Future addNewTask(PayloadNewTask payload) async {
     controller.value = ReloadingTasks(controller: controller);
-    await controller.dependencies.usecaseAddNewTask(payload: payload);
+    await controller.dependencies!.usecaseAddNewTask!(payload: payload);
   }
 }
 

@@ -20,9 +20,15 @@ class TasksList extends StatelessWidget {
               itemCount: tasksList.length,
               itemBuilder: (context, index) {
                 Task task = tasksList[index];
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 24.sp),
-                  child: Text("TITULO: ${task.title}"),
+
+                return SizedBox(
+                  width: 1.sw,
+                  child: Column(
+                    children: [
+                      index == 0 ? SizedBox(height: 24.sp) : Container(),
+                      TaskCard(task: task),
+                    ],
+                  ),
                 );
               },
             ),

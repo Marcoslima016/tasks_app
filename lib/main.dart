@@ -3,6 +3,6 @@ import 'package:tasks_app/lib.exports.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AppController.I.init();
+  AppController.I.initialize();
   runApp(const AppView());
 }
