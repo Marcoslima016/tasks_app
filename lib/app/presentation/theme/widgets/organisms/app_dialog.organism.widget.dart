@@ -2,6 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasks_app/app/app.exports.dart';
 
+class TwoButtonArea extends StatelessWidget {
+  const TwoButtonArea({
+    super.key,
+    required this.onClickLeft,
+    required this.onClickRight,
+    required this.buttonLeftText,
+    required this.buttonRightText,
+  });
+
+  final Future Function() onClickLeft;
+  final Future Function() onClickRight;
+  final String buttonLeftText;
+  final String buttonRightText;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 1.sw,
+      child: Row(
+        children: [
+          SizedBox(
+            child: ABoxButton.primary(
+              active: true,
+              onClick: onClickLeft,
+              text: buttonLeftText,
+            ),
+          ),
+          SizedBox(
+            child: ABoxButton.primary(
+              active: true,
+              onClick: onClickLeft,
+              text: buttonLeftText,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class SingleButtonArea extends StatelessWidget {
   const SingleButtonArea({
     super.key,
@@ -57,7 +97,7 @@ class AppDialog {
   }
 
   Future _closeDialog() async {
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(false);
   }
 
   Future show({required BuildContext context}) async {
@@ -77,7 +117,7 @@ class AppDialog {
               //OUT TAP
               GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).pop(false);
                 },
                 child: Container(
                   width: 1.sw,
@@ -93,7 +133,7 @@ class AppDialog {
         );
       },
     ).then((val) {
-      // tapClose();
+      return val;
     });
   }
 
@@ -130,7 +170,7 @@ class AppDialog {
                           AText.bodyRegular(text),
 
                           Padding(
-                            padding: EdgeInsets.only(top: 30.sp),
+                            padding: EdgeInsets.only(top: 35.sp),
                             child: buttonsArea(),
                           ),
                         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks_app/lib.exports.dart';
 
 import '../tasks.exports.dart';
 
@@ -11,9 +12,14 @@ abstract class ITasksState {
 
   Future onTapGoToCreateTask(TasksController controller) async {}
 
-  Future addNewTask(PayloadNewTask payload) async {}
+  Future addNewTask(PayloadNewTask payload, BuildContext context) async {}
 
   Future concludeTask(
+    Task task,
+    BuildContext context,
+  ) async {}
+
+  Future deleteTask(
     Task task,
     BuildContext context,
   ) async {}
@@ -66,18 +72,60 @@ class TasksLoaded extends ITasksState {
   }
 
   @override
-  Future addNewTask(PayloadNewTask payload) async {
-    controller.value = ReloadingTasks(controller: controller);
-    await controller.dependencies!.usecaseAddNewTask!(payload: payload);
+  Future addNewTask(PayloadNewTask payload, BuildContext context) async {
+    try {
+      controller.value = ReloadingTasks(controller: controller);
+      await controller.dependencies!.usecaseAddNewTask!(payload: payload);
+    } catch (e) {
+      if (context.mounted) {
+        AppController.I.showMessageDialog(
+          context: context,
+          title: "Ocorreu uma falha",
+          text: "Não foi possivel deletar a tarefa.",
+        );
+      }
+    }
   }
 
   @override
   Future concludeTask(Task task, BuildContext context) async {
-    controller.value = ReloadingTasks(controller: controller);
-    await controller.dependencies!.usecaseConcludeTask!(
-      context: context,
-      task: task,
-    );
+    try {
+      controller.value = ReloadingTasks(controller: controller);
+      await controller.dependencies!.usecaseConcludeTask!(
+        context: context,
+        task: task,
+      );
+    } catch (e) {
+      if (context.mounted) {
+        AppController.I.showMessageDialog(
+          context: context,
+          title: "Ocorreu uma falha",
+          text: "Não foi possivel deletar a tarefa.",
+        );
+      }
+    }
+  }
+
+  @override
+  Future deleteTask(
+    Task task,
+    BuildContext context,
+  ) async {
+    try {
+      controller.value = ReloadingTasks(controller: controller);
+      await controller.dependencies!.usecaseDeleteTask!(
+        context: context,
+        task: task,
+      );
+    } catch (e) {
+      if (context.mounted) {
+        AppController.I.showMessageDialog(
+          context: context,
+          title: "Ocorreu uma falha",
+          text: "Não foi possivel deletar a tarefa.",
+        );
+      }
+    }
   }
 }
 

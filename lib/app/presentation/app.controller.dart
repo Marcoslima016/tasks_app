@@ -64,7 +64,7 @@ class AppController implements AppPresenter {
     required String title,
     required String text,
   }) async {
-    AppDialog.message(
+    return await AppDialog.message(
       title: title,
       text: text,
     ).show(context: context);

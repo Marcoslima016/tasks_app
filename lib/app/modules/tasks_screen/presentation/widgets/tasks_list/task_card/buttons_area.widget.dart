@@ -33,7 +33,12 @@ class TaskCardButtonsArea extends StatelessWidget {
               ),
         _buildButton(
           Icons.delete_outlined,
-          () {},
+          () {
+            TasksController.I.deleteTaskFromList(
+              GetIt.I.get<BuildContext>(instanceName: TasksScreen.tag),
+              task,
+            );
+          },
         ),
       ],
     );

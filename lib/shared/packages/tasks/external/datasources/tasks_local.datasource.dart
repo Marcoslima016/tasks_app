@@ -68,4 +68,20 @@ class TasksLocalDatasource implements ITasksDatasource {
       rethrow;
     }
   }
+
+  @override
+  Future deleteTask({required Map<String, dynamic> data}) async {
+    try {
+      List<Map<String, dynamic>> allTasks = await getAllTasks();
+
+      allTasks.removeWhere((element) => element["id"] == data["id"]);
+
+      await storage.putList(
+        key: storageTag,
+        list: allTasks,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

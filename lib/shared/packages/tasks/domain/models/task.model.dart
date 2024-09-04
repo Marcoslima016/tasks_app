@@ -13,7 +13,7 @@ class Task {
     String day = dateTimeCreation.day.toString();
     String month = dateTimeCreation.month.toString();
     String year = dateTimeCreation.year.toString();
-    String date = "${day.length < 2 ? "0" : ""}$day/${month.length < 2 ? "0" : ""}$day/$year";
+    String date = "${day.length < 2 ? "0" : ""}$day/${month.length < 2 ? "0" : ""}$month/$year";
 
     String hour = dateTimeCreation.hour.toString();
     String minute = dateTimeCreation.minute.toString();

@@ -22,11 +22,12 @@ class TasksController extends ValueNotifier<ITasksState> with TasksPresenter {
   Future onTapGoToCreateTask() => value.onTapGoToCreateTask(this);
 
   @override
-  Future addNewTaskToList(PayloadNewTask payload) async => await value.addNewTask(payload);
+  Future addNewTaskToList(PayloadNewTask payload, BuildContext context) async =>
+      await value.addNewTask(payload, context);
 
   Future concludeTask(BuildContext context, Task task) async => await value.concludeTask(task, context);
 
-  Future deleteTaskFromList() async {}
+  Future deleteTaskFromList(BuildContext context, Task task) async => await value.deleteTask(task, context);
 
   @override
   Future setLoadedState({required List<Task> tasksList}) async {

@@ -24,21 +24,15 @@ class TasksRepository implements ITasksRepository {
   }
 
   @override
-  Future<Task> addNewTask({
+  Future addNewTask({
     required PayloadNewTask payload,
   }) async {
     try {
-      Map<String, dynamic> response = await datasource.addNewTask(
+      await datasource.addNewTask(
         data: {
           "title": payload.title,
           "description": payload.description,
         },
-      );
-      return Task(
-        id: response["id"],
-        title: response["title"],
-        description: response["description"],
-        dateTimeCreation: DateTime.parse(response["dateTimeCreation"]),
       );
     } catch (e) {
       rethrow;
@@ -49,6 +43,21 @@ class TasksRepository implements ITasksRepository {
   Future concludeTask({required Task task}) async {
     try {
       await datasource.concludeTask(
+        data: <String, dynamic>{
+          "id": task.id,
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future deleteTask({
+    required Task task,
+  }) async {
+    try {
+      await datasource.deleteTask(
         data: <String, dynamic>{
           "id": task.id,
         },

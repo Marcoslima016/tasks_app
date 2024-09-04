@@ -12,6 +12,7 @@ class TasksDependencies {
   late IOnTapGoToCreateTask? usecaseOnTapGoToCreateTask;
   late IAddNewTask? usecaseAddNewTask;
   late IConcludeTask? usecaseConcludeTask;
+  late IDeleteTask? usecaseDeleteTask;
 
   TasksDependencies({
     required this.appController,
@@ -23,6 +24,7 @@ class TasksDependencies {
     this.usecaseOnTapGoToCreateTask,
     this.usecaseAddNewTask,
     this.usecaseConcludeTask,
+    this.usecaseDeleteTask,
   });
 
   bind() {
@@ -58,5 +60,13 @@ class TasksDependencies {
       usecaseGetAllTasks: GetIt.I.get(),
     );
     GetIt.I.registerFactory<IConcludeTask>(() => usecaseConcludeTask!);
+
+    usecaseDeleteTask ??= DeleteTask(
+      appPresenter: appController,
+      tasksPresenter: tasksController,
+      tasksRepository: GetIt.I.get(),
+      usecaseGetAllTasks: GetIt.I.get(),
+    );
+    GetIt.I.registerFactory<IDeleteTask>(() => usecaseDeleteTask!);
   }
 }
