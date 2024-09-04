@@ -3,9 +3,7 @@ import 'package:tasks_app/lib.exports.dart';
 
 class CreateTaskScreenDependencies {
   late IValidateFormOnInputUpdate? usecaseValidateFormOnInputUpdate;
-
   late IOnTapCreateTask? usecaseOnTapCreateTask;
-
   late final CreateTaskScreenController controller;
 
   CreateTaskScreenDependencies({
@@ -14,7 +12,7 @@ class CreateTaskScreenDependencies {
     this.usecaseOnTapCreateTask,
   });
 
-  bind() {
+  void bind() {
     usecaseValidateFormOnInputUpdate ??= ValidateFormOnInputUpdate(createTaskScreenPresenter: controller);
     GetIt.I.registerFactory<IValidateFormOnInputUpdate>(() => usecaseValidateFormOnInputUpdate!);
 
@@ -24,5 +22,10 @@ class CreateTaskScreenDependencies {
       appPresenter: AppController.I,
     );
     GetIt.I.registerFactory<IOnTapCreateTask>(() => usecaseOnTapCreateTask!);
+  }
+
+  void dispose() {
+    GetIt.I.unregister<IOnTapCreateTask>();
+    GetIt.I.unregister<IValidateFormOnInputUpdate>();
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:tasks_app/lib.exports.dart';
 
 class TaskCard extends StatelessWidget {
@@ -65,7 +63,7 @@ class TaskCard extends StatelessWidget {
       top: 0,
       child: Container(
         width: 5.sp,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.red,
 
           // borderRadius: BorderRadius.only(

@@ -11,6 +11,7 @@ class CreateTaskScreenController extends ValueNotifier<ICreateTaskScreenState> i
   String get getInputDescriptionText => inputDescription.text;
 
   late CreateTaskScreenDependencies? dependencies;
+
   CreateTaskScreenController({
     this.dependencies,
   }) : super(FillState()) {
@@ -27,4 +28,8 @@ class CreateTaskScreenController extends ValueNotifier<ICreateTaskScreenState> i
   }
 
   Future onTapCreate(BuildContext context) => value.onTapCreate(this, context);
+
+  void disposeController() {
+    dependencies!.dispose();
+  }
 }

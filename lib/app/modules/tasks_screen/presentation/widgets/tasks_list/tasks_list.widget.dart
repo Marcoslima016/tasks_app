@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasks_app/lib.exports.dart';
 
-import 'task_card.widget.dart';
-
 class TasksList extends StatelessWidget {
   const TasksList({super.key});
 

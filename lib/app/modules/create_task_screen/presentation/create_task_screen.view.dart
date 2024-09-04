@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasks_app/lib.exports.dart';
 
-import 'create_task_screen.controller.dart';
-
 class CreateTaskScreen extends StatefulWidget with AppScreen {
   const CreateTaskScreen({super.key});
 
@@ -20,6 +18,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   CreateTaskScreenController controller = CreateTaskScreenController();
 
   @override
+  void dispose() {
+    controller.disposeController();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
@@ -30,17 +34,34 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       centerTitle: false,
-      title: Text(
-        "Criar nova tarefa",
-        style: TextStyle(
-          fontFamily: "Figtree",
-          fontWeight: FontWeight.w600,
-          color: const Color.fromARGB(255, 25, 25, 25),
-          fontSize: 23.sp,
-        ),
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Icon(
+              Icons.chevron_left,
+              color: AppTheme.colors.primary,
+              size: 30.sp,
+            ),
+          ),
+          SizedBox(width: 10.w),
+          Text(
+            "Criar nova tarefa",
+            style: TextStyle(
+              fontFamily: "Figtree",
+              fontWeight: FontWeight.w600,
+              color: const Color.fromARGB(255, 25, 25, 25),
+              fontSize: 23.sp,
+            ),
+          ),
+        ],
       ),
       elevation: 0,
       leadingWidth: 0,
+      leading: Container(),
       backgroundColor: AppTheme.colors.surface,
     );
   }
@@ -69,7 +90,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
             ),
 
             //
-
             ValueListenableBuilder(
               valueListenable: controller,
               builder: (context, state, child) {

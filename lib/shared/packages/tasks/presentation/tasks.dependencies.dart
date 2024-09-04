@@ -3,17 +3,11 @@ import 'package:tasks_app/lib.exports.dart';
 
 class TasksDependencies {
   late ITasksDatasource? tasksDatasource;
-
   late ITasksRepository? tasksRepository;
-
   late IInitTasks? usecaseInitTasks;
-
   late IOnTapGoToCreateTask? usecaseOnTapGoToCreateTask;
-
   late IAddNewTask? usecaseAddNewTask;
-
   late final AppController appController;
-
   late final TasksController tasksController;
 
   TasksDependencies({

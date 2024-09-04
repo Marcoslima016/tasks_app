@@ -1,5 +1,4 @@
 import 'package:auto_injector/auto_injector.dart';
-import 'package:get_it/get_it.dart';
 import 'package:tasks_app/lib.exports.dart';
 
 class TasksDependencies {

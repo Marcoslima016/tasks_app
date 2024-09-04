@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tasks_app/lib.exports.dart';
-
 import 'app.dependencies.dart';
 
 abstract class AppPresenter {
@@ -32,7 +30,6 @@ class AppController implements AppPresenter {
   Future initialize() async {
     dependencies.bind();
     dependencies.tasksController!.initialize();
-    // tasksController.initialize();
   }
 
   @override
