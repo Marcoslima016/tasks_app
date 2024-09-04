@@ -1,5 +1,5 @@
 # Tasks App
 
-Aplicativo de Listas de tarefa
+Aplicativo de Lista de tarefas
 
 Flutter version: 3.19.4
