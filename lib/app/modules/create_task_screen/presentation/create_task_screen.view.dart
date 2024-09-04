@@ -43,8 +43,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
             },
             child: Icon(
               Icons.chevron_left,
-              color: AppTheme.colors.primary,
-              size: 30.sp,
+              color: const Color.fromARGB(255, 130, 130, 130),
+              size: 26.sp,
             ),
           ),
           SizedBox(width: 10.w),
@@ -53,7 +53,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
             style: TextStyle(
               fontFamily: "Figtree",
               fontWeight: FontWeight.w800,
-              color: const Color.fromARGB(255, 25, 25, 25),
+              color: const Color.fromARGB(255, 46, 46, 46),
               fontSize: 20.sp,
             ),
           ),

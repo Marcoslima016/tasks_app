@@ -17,7 +17,7 @@ class Task {
     String minute = dateTimeCreation.minute.toString();
     String time = "${hour.length < 2 ? "0" : ""}$hour:${minute.length < 2 ? "0" : ""}$minute";
 
-    return "$date $time";
+    return "$date às $time";
   }
 
   Task({

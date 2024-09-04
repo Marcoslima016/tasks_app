@@ -8,9 +8,9 @@ class TaskCardButtonsArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _buildButton(Icons.check),
-        SizedBox(width: 10.w),
         _buildButton(Icons.delete),
+        SizedBox(width: 14.w),
+        _buildButton(Icons.check),
       ],
     );
   }
@@ -19,14 +19,14 @@ class TaskCardButtonsArea extends StatelessWidget {
     return Container(
       width: 22.sp,
       height: 22.sp,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color.fromARGB(255, 247, 247, 247),
         shape: BoxShape.circle,
       ),
       child: Center(
         child: Icon(
           icon,
-          color: Color.fromARGB(255, 226, 226, 226),
+          color: const Color.fromARGB(255, 226, 226, 226),
           size: 14.sp,
         ),
       ),
