@@ -6,6 +6,20 @@ class Task {
   String description;
   final DateTime dateTimeCreation;
   bool done;
+
+  String get dateTimeDisplay {
+    String day = dateTimeCreation.day.toString();
+    String month = dateTimeCreation.month.toString();
+    String year = dateTimeCreation.year.toString();
+    String date = "${day.length < 2 ? "0" : ""}$day/${month.length < 2 ? "0" : ""}$day/$year";
+
+    String hour = dateTimeCreation.hour.toString();
+    String minute = dateTimeCreation.minute.toString();
+    String time = "${hour.length < 2 ? "0" : ""}$hour:${minute.length < 2 ? "0" : ""}$minute";
+
+    return "$date $time";
+  }
+
   Task({
     int? id,
     required this.title,

@@ -60,7 +60,7 @@ class TaskCard extends StatelessWidget {
           SizedBox(height: 4.sp),
           AText.bodyRegular(task.description),
           SizedBox(height: 16.sp),
-          AText.labelSmall("00/00/00"),
+          AText.labelSmall(task.dateTimeDisplay),
         ],
       ),
     );
