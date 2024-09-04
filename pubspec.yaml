@@ -1,9 +1,9 @@
 name: tasks_app
-description: "A new Flutter project."
+description: "Aplicativo de lista de tarefas"
 
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: '>=3.3.2 <4.0.0'
