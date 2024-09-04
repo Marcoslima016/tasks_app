@@ -30,9 +30,9 @@ class _TasksScreenState extends State<TasksScreen> {
         "Minhas tarefas",
         style: TextStyle(
           fontFamily: "Figtree",
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w800,
           color: const Color.fromARGB(255, 25, 25, 25),
-          fontSize: 23.sp,
+          fontSize: 20.sp,
         ),
       ),
       elevation: 0,

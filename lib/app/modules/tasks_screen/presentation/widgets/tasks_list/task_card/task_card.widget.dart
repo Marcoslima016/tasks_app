@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasks_app/lib.exports.dart';
 
+import 'buttons_area.widget.dart';
+
 class TaskCard extends StatelessWidget {
   final Task task;
 
@@ -16,7 +18,7 @@ class TaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 1.sw,
-      margin: EdgeInsets.only(bottom: 22.sp),
+      margin: EdgeInsets.only(bottom: 18.sp),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(_borderRadius),
       ),
@@ -47,8 +49,15 @@ class TaskCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AText.headingRegular(task.title),
-          SizedBox(height: 5.sp),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AText.headingRegular(task.title),
+              const TaskCardButtonsArea(),
+            ],
+          ),
+          SizedBox(height: 4.sp),
           AText.bodyRegular(task.description),
           SizedBox(height: 16.sp),
           AText.labelSmall("00/00/00"),

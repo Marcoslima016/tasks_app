@@ -55,7 +55,7 @@ class ThemeTextStylesTokens {
   static ThemeTextStyle headingRegular = ThemeTextStyle.style(
     _parent.copyWith(
       fontSize: 16,
-      fontWeight: FontWeight.w800,
+      fontWeight: FontWeight.w700,
       color: const Color.fromARGB(255, 21, 21, 21),
     ),
   );

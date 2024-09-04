@@ -52,9 +52,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
             "Criar nova tarefa",
             style: TextStyle(
               fontFamily: "Figtree",
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w800,
               color: const Color.fromARGB(255, 25, 25, 25),
-              fontSize: 23.sp,
+              fontSize: 20.sp,
             ),
           ),
         ],
