@@ -5,6 +5,16 @@ import '../app.exports.dart';
 
 abstract mixin class AppScreen {
   String get screenTag;
+  injectScreenContext(BuildContext context) {
+    try {
+      if (GetIt.I.isRegistered<BuildContext>(instanceName: screenTag)) {
+        GetIt.I.unregister<BuildContext>(instanceName: screenTag);
+      }
+      GetIt.I.registerSingleton<BuildContext>(context, instanceName: screenTag);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 abstract class IAppRoutes {

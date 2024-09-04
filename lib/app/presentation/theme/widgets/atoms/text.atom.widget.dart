@@ -96,6 +96,14 @@ class AText extends StatelessWidget {
     this.align,
   }) : style = ThemeTextStylesTokens.bodyRegularBold;
 
+  AText.labelRegular(
+    this.data, {
+    super.key,
+    this.color,
+    this.variation,
+    this.align,
+  }) : style = ThemeTextStylesTokens.labelRegular;
+
   AText.labelSmall(
     this.data, {
     super.key,

@@ -13,26 +13,35 @@ class TasksList extends StatelessWidget {
         if (state is TasksLoaded) {
           List<Task> tasksList = state.tasksList;
 
-          return Container(
-            width: 1.sw,
-            padding: EdgeInsets.only(left: 24.sp, right: 24.sp),
-            child: ListView.builder(
-              itemCount: tasksList.length,
-              itemBuilder: (context, index) {
-                Task task = tasksList[index];
+          if (tasksList.isNotEmpty) {
+            return Container(
+              width: 1.sw,
+              padding: EdgeInsets.only(left: 24.sp, right: 24.sp),
+              child: ListView.builder(
+                itemCount: tasksList.length,
+                itemBuilder: (context, index) {
+                  Task task = tasksList[index];
 
-                return SizedBox(
-                  width: 1.sw,
-                  child: Column(
-                    children: [
-                      index == 0 ? SizedBox(height: 24.sp) : Container(),
-                      TaskCard(task: task),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
+                  return SizedBox(
+                    width: 1.sw,
+                    child: Column(
+                      children: [
+                        index == 0 ? SizedBox(height: 24.sp) : Container(),
+                        TaskCard(task: task),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            );
+          } else {
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.sp),
+                child: AText.labelRegular("Nenhuma tarefa foi criada."),
+              ),
+            );
+          }
         } else {
           return Container();
         }

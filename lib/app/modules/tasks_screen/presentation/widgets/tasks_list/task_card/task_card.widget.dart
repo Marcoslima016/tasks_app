@@ -12,7 +12,7 @@ class TaskCard extends StatelessWidget {
     required this.task,
   });
 
-  static final double _borderRadius = 8.sp;
+  static final double _borderRadius = 10.sp;
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +54,10 @@ class TaskCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               AText.headingRegular(task.title),
-              const TaskCardButtonsArea(),
+              TaskCardButtonsArea(task: task),
             ],
           ),
-          SizedBox(height: 4.sp),
+          SizedBox(height: 2.sp),
           AText.bodyRegular(task.description),
           SizedBox(height: 16.sp),
           AText.labelSmall(task.dateTimeDisplay),
@@ -72,13 +72,8 @@ class TaskCard extends StatelessWidget {
       top: 0,
       child: Container(
         width: 5.sp,
-        decoration: const BoxDecoration(
-          color: Colors.red,
-
-          // borderRadius: BorderRadius.only(
-          //   topLeft: Radius.circular(_borderRadius),
-          //   bottomLeft: Radius.circular(_borderRadius),
-          // ),
+        decoration: BoxDecoration(
+          color: task.doneFlagColor,
         ),
       ),
     );

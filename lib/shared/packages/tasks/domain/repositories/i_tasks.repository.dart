@@ -4,4 +4,6 @@ abstract class ITasksRepository {
   Future<List<Task>> getAllTasks();
 
   Future<Task> addNewTask({required PayloadNewTask payload});
+
+  Future concludeTask({required Task task});
 }
