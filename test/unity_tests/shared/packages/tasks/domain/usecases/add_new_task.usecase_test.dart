@@ -47,8 +47,8 @@ void main() {
 
     when(mockGetAllTasks.call()).thenAnswer((_) async => updatedTasks);
     when(mockTasksRepository.addNewTask(payload: payload)).thenAnswer((_) async => null);
-    when(mockTasksPresenter.setLoadedState(tasksList: updatedTasks)).thenAnswer((_) async {
-      tasksPresenterUpdatedTasks = updatedTasks;
+    when(mockTasksPresenter.setLoadedState(tasksList: anyNamed("tasksList"))).thenAnswer((_) async {
+      tasksPresenterUpdatedTasks = _.namedArguments.values.first;
     });
 
     await addNewTask.call(payload: payload);
