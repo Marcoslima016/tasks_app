@@ -1,4 +1,4 @@
-name: Pipeline APP LOTO4FUN
+name: Pipeline TASKS APP 
 
 on:
   workflow_call:
@@ -6,9 +6,9 @@ on:
       environment:
         required: true
         type: string
-    secrets:
-      GCP_SA_KEY:
-        required: true
+    # secrets:
+    #   GCP_SA_KEY:
+    #     required: true
 
 env:
   DEPLOY_ENV: Dev
