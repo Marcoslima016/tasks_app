@@ -43,13 +43,17 @@ void main() {
       ),
     ];
 
+    List tasksPresenterUpdatedTasks = [];
+
     when(mockGetAllTasks.call()).thenAnswer((_) async => updatedTasks);
     when(mockTasksRepository.addNewTask(payload: payload)).thenAnswer((_) async => null);
-
-    when(mockTasksPresenter.setLoadedState(tasksList: updatedTasks)).thenAnswer((_) async => null);
+    when(mockTasksPresenter.setLoadedState(tasksList: anyNamed("tasksList"))).thenAnswer((_) async {
+      tasksPresenterUpdatedTasks = _.namedArguments.values.first;
+    });
 
     await addNewTask.call(payload: payload);
 
+    expect(tasksPresenterUpdatedTasks, updatedTasks);
     verify(mockTasksRepository.addNewTask(payload: payload)).called(1);
     verify(mockGetAllTasks.call()).called(1);
     verify(mockTasksPresenter.setLoadedState(tasksList: updatedTasks)).called(1);
