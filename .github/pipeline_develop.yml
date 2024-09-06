@@ -1,0 +1,16 @@
+name: Pipeline APP FINANÇA+ - Ambiente DEV
+run-name: Pipeline DEV 
+
+on:
+  push:
+    branches:
+      - "develop"
+
+jobs:
+  call-pipeline:
+    name: <DEV>
+    uses: ./.github/workflows/pipeline.yml
+    with:
+      environment: develop
+    secrets:
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}

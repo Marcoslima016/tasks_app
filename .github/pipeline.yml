@@ -1,0 +1,440 @@
+name: Pipeline APP LOTO4FUN
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+    secrets:
+      GCP_SA_KEY:
+        required: true
+
+env:
+  DEPLOY_ENV: Dev
+  # HAS_HASH: false
+
+jobs:
+  # #=========================================================================================================================================
+  # #                                                            PIPELINE SETUP
+  # #=========================================================================================================================================
+
+  #----------------------------------------------------------------------------------------
+  #                                     START PIPELINE
+  #----------------------------------------------------------------------------------------
+
+  start_pipeline:
+    name: Start Pipeline
+    runs-on: ubuntu-latest
+    outputs:
+      BUCKET: ${{ steps.ambiente.outputs.bucket}}
+      DEPLOY_ENV: ${{ steps.ambiente.outputs.tag}}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - run: ls -l ./
+      - run: ls -l ../
+      - run: ls -l ../../
+      - run: ls /
+
+      - name: Definir Ambiente
+        id: ambiente
+        run: |
+          #-------------- DEVELOP --------------
+
+          if [[ ${{ inputs.environment }} == "develop" ]]; then
+            echo "tag=dev" >> $GITHUB_OUTPUT
+            echo "bucket=app-client-l4f-web-dev" >> $GITHUB_OUTPUT
+          fi
+
+          #-------------- HOMOLOG --------------
+
+          if [[ ${{ inputs.environment }} == "homolog" ]]; then
+            echo "tag=homolog" >> $GITHUB_OUTPUT
+            echo "bucket=app-client-l4f-web-homolog" >> $GITHUB_OUTPUT
+          fi
+
+  #----------------------------------------------------------------------------------------
+  #                                CONFIGURAR AMBIENTE FLUTTER
+  #----------------------------------------------------------------------------------------
+  # OBSERVACAO ===> PRECISA RODAR APENAS NA PRIMEIRA EXECUÇÂO DO WORKFLOW **
+
+  config_flutter:
+    name: Config flutter
+    needs: start_pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # -----------------------------------------------
+
+
+
+      # -----------------------------------------------
+
+      - run: ls -l ./
+      - run: ls -l ../
+      - run: ls -l ../../
+      - run: ls /
+
+      - name: Verificar se existem dependencias em Cache
+        id: check-cache-dependencies
+        run: |
+          if [ -d "/opt/hostedtoolcache/flutter/LICENSE" ]; then
+            echo "true"
+          else 
+            echo "false"
+          fi
+
+      #---------------- CACHE FLUTTER ----------------
+
+      - name: Cache Flutter
+        if: ${{ steps.check-cache-dependencies.outputs.cache-hit != 'true' }}
+        uses: actions/cache@v3
+        with:
+          path: |
+            /opt/hostedtoolcache/flutter
+            /opt/hostedtoolcache/jdk
+          key: cache-flutter
+
+      #----------- SALVAR ARTEFACT PROJETO -----------
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: project
+          path: ./lib
+          retention-days: 1
+
+      #------------ BAIXAR JAVA / FLUTTER ------------
+
+      - name: Baixar ambiente Flutter
+        if: ${{ steps.check-cache-dependencies.outputs.cache-hit != 'true' }}
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.19.4"
+          channel: "stable" # or: 'dev' or 'beta'
+
+      - name: Baixar ambiente Java
+        if: ${{ steps.check-cache-dependencies.outputs.cache-hit != 'true' }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: "11.x"
+
+      # #------------------ DEBUG LOGS -----------------
+      - run: pwd
+
+
+  #====================================================================================================================================
+  #                                                        TESTES AUTOMATIZADOS
+  #====================================================================================================================================
+
+  #----------------------------------------------------------------------------------------
+  #                           RODAR TESTES / VERIFICAR COBERTURA
+  #----------------------------------------------------------------------------------------
+  auto_teste:
+    name: Run tests
+    needs: [config_flutter]
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout do código
+        uses: actions/checkout@v2
+        # with:
+        #   token:
+
+      - run: ls -l ./
+
+      #----------- CACHE FLUTTER -----------
+
+      - name: Cache Flutter
+        uses: actions/cache@v3
+        with:
+          path: |
+            /opt/hostedtoolcache/flutter
+            /opt/hostedtoolcache/jdk
+          key: cache-flutter
+
+      #----------- CACHE PROJETO -----------
+
+      - name: Cache Project
+        uses: actions/cache@v3
+        with:
+          path: ./
+          key: cache-project
+
+
+
+      #----------- CACHE PUB_CACHE -----------
+
+      - name: Cache PUB_CACHE
+        uses: actions/cache@v3
+        with:
+          path: |
+            /home/runner/.pub-cache
+          key: cache-pubcache
+
+
+      #--------- CONFIGURAR PUBSPEC ---------
+
+
+      #----------- SET SYSTEM PATHS -----------
+
+      - run: echo $PATH
+      - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/.pub-cache/bin" >> $GITHUB_PATH
+      - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/bin/cache/dart-sdk/bin" >> $GITHUB_PATH
+      - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/bin" >> $GITHUB_PATH
+      - run: echo $PATH
+
+      #------------- INSTALAR LCOV ------------
+
+      - name: Instalar LCOV
+        run: |
+          sudo apt-get update -qq -y
+          sudo apt-get install lcov -y
+
+      - run: rm -rf ~/.pub-cache
+      # - run: flutter pub get
+      - run: dart pub get
+
+      - run: pwd
+      - run: ls -l ./
+
+      #--------- RODAR TESTES / COVERAGE --------
+
+      - name: Verificar cobertura
+        run: dart run dlcov --lcov-gen="flutter test --coverage" --coverage=1 --include-untested-files=true
+
+  #=========================================================================================================================================
+  #                                                               ANDROID
+  #=========================================================================================================================================
+
+  #----------------------------------------------------------------------------------------
+  #                                         BUILD
+  #----------------------------------------------------------------------------------------
+
+  build_android:
+    name: Build Android
+    needs: [start_pipeline, config_flutter]
+    runs-on: ubuntu-latest
+    # concurrency:
+    #   group: ONLY-IN-TESTS-SUCCESS
+    #   cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v2
+
+      # - run: rm ./pubspec.yaml
+      # - run: mv pipeline/pubspec_pipeline.yaml ./pubspec.yaml
+
+      - run: ls -l ./
+
+      #----------- CACHE FLUTTER -----------
+
+      - name: Cache Flutter
+        uses: actions/cache@v3
+        with:
+          path: |
+            /opt/hostedtoolcache/flutter
+            /opt/hostedtoolcache/jdk
+          key: cache-flutter
+
+      #-------- BAIXAR ARTEFACT PROJETO --------
+
+      - uses: actions/download-artifact@master
+        with:
+          name: project
+          path: ./lib
+
+      #----------- CACHE PUB_CACHE -----------
+
+      - name: Cache PUB_CACHE
+        uses: actions/cache@v3
+        with:
+          path: |
+            /home/runner/.pub-cache
+          key: cache-pubcache
+
+
+
+      #--------- CONFIGURAR PUBSPEC ---------
+
+
+
+      #----------- SET SYSTEM PATHS -----------
+
+      - run: echo $PATH
+      - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/.pub-cache/bin" >> $GITHUB_PATH
+      - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/bin/cache/dart-sdk/bin" >> $GITHUB_PATH
+      - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/bin" >> $GITHUB_PATH
+      - run: echo $PATH
+
+      - run: ls -l ./
+
+      - name: Build DEVELOP
+        if: ${{ needs.start_pipeline.outputs.DEPLOY_ENV == 'dev' }}
+        run: flutter build apk 
+        # run: flutter build apk --flavor development -t lib/main_dev.dart
+
+      - name: Build HOMOLOG
+        if: ${{ needs.start_pipeline.outputs.DEPLOY_ENV == 'homolog' }}
+        run: flutter build apk --flavor homolog -t lib/main_homolog.dart
+
+  #----------------------------------------------------------------------------------------
+  #                                         DEPLOY
+  #----------------------------------------------------------------------------------------
+
+  deploy_android:
+    name: Deploy Android
+    needs: [build_android, auto_teste]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - run: echo "RUN DEPLOY"
+      # - run: sleep 3m
+      # - run: echo "finish!"
+
+  #====================================================================================================================================
+  #                                                                 WEB
+  #====================================================================================================================================
+
+  # #----------------------------------------------------------------------------------------
+  # #                                         BUILD
+  # #----------------------------------------------------------------------------------------
+
+  # build_web:
+  #   name: Build Web
+  #   needs: [start_pipeline, config_flutter]
+  #   runs-on: ubuntu-latest
+  #   # concurrency:
+  #   #   group: ONLY-IN-TESTS-SUCCESS
+  #   #   cancel-in-progress: true
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  #     - run: rm ./pubspec.yaml
+  #     - run: mv pipeline/pubspec_pipeline.yaml ./pubspec.yaml
+
+  #     #----------- CACHE FLUTTER -----------
+
+  #     - name: Cache Flutter
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: |
+  #           /opt/hostedtoolcache/flutter
+  #           /opt/hostedtoolcache/jdk
+  #         key: cache-flutter
+
+  #     #-------- BAIXAR ARTEFACT PROJETO --------
+
+  #     - uses: actions/download-artifact@master
+  #       with:
+  #         name: project
+  #         path: ./lib
+
+  #     #----------- CACHE PUB_CACHE -----------
+
+  #     - name: Cache PUB_CACHE
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: |
+  #           /home/runner/.pub-cache
+  #         key: cache-pubcache
+
+  #     #----------- SET SYSTEM PATHS -----------
+
+  #     - run: echo $PATH
+  #     - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/.pub-cache/bin" >> $GITHUB_PATH
+  #     - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/bin/cache/dart-sdk/bin" >> $GITHUB_PATH
+  #     - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/bin" >> $GITHUB_PATH
+  #     - run: echo $PATH
+
+  #     # - - - - - - - - - - - - - - - - - - - - - - - - -
+  #     - name: Build DEVELOP
+  #       if: ${{ needs.start_pipeline.outputs.DEPLOY_ENV == 'dev' }}
+  #       run: flutter build web --target lib/main_dev.dart
+
+  #     # - name: Build HOMOLOG
+  #     #   if: ${{ needs.start_pipeline.outputs.DEPLOY_ENV == 'homolog' }}
+  #     #   run: flutter build web --target lib/main_homolog.dart
+
+  #     - name: TESTE
+  #       run: ls -l ./build/web | awk '{ print $NF }'
+  #     # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  #     #----------- SALVAR ARTEFACT BUILD WEB -----------
+
+  #     - uses: actions/upload-artifact@master
+  #       with:
+  #         name: build_web3
+  #         path: ./build
+  #         retention-days: 1
+
+  # #----------------------------------------------------------------------------------------
+  # #                                         DEPLOY
+  # #----------------------------------------------------------------------------------------
+
+  # deploy_web:
+  #   name: Deploy Web
+  #   needs: [start_pipeline, build_web, auto_teste]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # - uses: actions/checkout@v2
+  #     - uses: actions/checkout@master
+
+  #     #----------- CACHE FLUTTER -----------
+
+  #     - name: Cache Flutter
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: |
+  #           /opt/hostedtoolcache/flutter
+  #           /opt/hostedtoolcache/jdk
+  #         key: cache-flutter
+
+  #     #------- BAIXAR ARTEFACT BUILD WEB -------
+
+  #     - uses: actions/download-artifact@master
+  #       with:
+  #         name: build_web3
+  #         path: ./build
+
+  #     #----------- SET SYSTEM PATHS -----------
+
+  #     - run: echo $PATH
+  #     - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/.pub-cache/bin" >> $GITHUB_PATH
+  #     - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/bin/cache/dart-sdk/bin" >> $GITHUB_PATH
+  #     - run: echo "/opt/hostedtoolcache/flutter/3.19.4-stable/x64/bin" >> $GITHUB_PATH
+  #     - run: echo $PATH
+
+  #     #-----------------------------------------
+
+  #     - name: TESTE
+  #       run: ls -l ./build/web | awk '{ print $NF }'
+
+  #     - id: "auth"
+  #       uses: "google-github-actions/auth@v0"
+  #       with:
+  #         credentials_json: "${{ secrets.GCP_SA_KEY }}"
+
+  #     - name: "Set up Cloud SDK"
+  #       uses: "google-github-actions/setup-gcloud@v0"
+
+  #     - name: "Use gcloud CLI"
+  #       run: "gcloud info"
+
+  #     - name: Upload files to bucket
+  #       run: gsutil -m rsync -R ./build/web gs://"${{ needs.start_pipeline.outputs.BUCKET }}"
+
+  #     - name: Allow AllUsers
+  #       run: gsutil -m acl ch -R -u AllUsers:R gs://"${{needs.start_pipeline.outputs.BUCKET }}"
+
+  #     - name: Set Cache-Control
+  #       run: gsutil -m setmeta -h "Cache-Control:public, max-age=10000" gs://"${{ needs.start_pipeline.outputs.BUCKET }}"/**/*.{png,svg,js}
+
+  #     - name: Set Cache-Control
+  #       run: gsutil -m setmeta -h "Cache-Control:no-cache, no-store" gs://"${{needs.start_pipeline.outputs.BUCKET }}"/index.html
