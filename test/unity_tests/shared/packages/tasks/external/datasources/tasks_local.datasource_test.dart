@@ -9,7 +9,7 @@ import 'tasks_local.datasource_test.mocks.dart';
 void main() {
   late TasksLocalDatasource datasource;
   late MockILocalStorageDriver mockLocalStorageDriver;
-  final storageTag = "tasks-list";
+  const storageTag = "tasks-list";
 
   setUp(() {
     mockLocalStorageDriver = MockILocalStorageDriver();
@@ -19,11 +19,11 @@ void main() {
   group('concludeTask', () {
     test('deve marcar a tarefa como concluída', () async {
       // Arrange - - - - - - - - - -
-      final task = {"id": 1, "title": "Task 1", "description": "Desc 1", "done": false};
-      final updatedTask = {"id": 1, "title": "Task 1", "description": "Desc 1", "done": true};
-      final taskList = [task];
+      final initialTask = {"id": 1, "title": "Task 1", "description": "Desc 1", "done": false};
+      final expectedUpdatedTask = {"id": 1, "title": "Task 1", "description": "Desc 1", "done": true};
+      final initialTasksList = [initialTask];
 
-      when(mockLocalStorageDriver.getList(key: storageTag)).thenAnswer((_) async => taskList);
+      when(mockLocalStorageDriver.getList(key: storageTag)).thenAnswer((_) async => initialTasksList);
       when(mockLocalStorageDriver.putList(key: storageTag, list: anyNamed("list"))).thenAnswer((_) async => null);
 
       // Act - - - - - - - - - - - -
@@ -31,7 +31,7 @@ void main() {
 
       // Assert - - - - - - - - - - -
       verify(mockLocalStorageDriver.getList(key: storageTag)).called(1);
-      verify(mockLocalStorageDriver.putList(key: storageTag, list: [updatedTask])).called(1);
+      verify(mockLocalStorageDriver.putList(key: storageTag, list: [expectedUpdatedTask])).called(1);
       verifyNoMoreInteractions(mockLocalStorageDriver);
     });
 
