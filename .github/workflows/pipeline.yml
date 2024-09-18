@@ -45,7 +45,8 @@ jobs:
           #-------------- DEVELOP --------------
 
           if [[ ${{ inputs.environment }} == "develop" ]]; then
-            echo "tag=dev" >> $GITHUB_OUTPUT          fi
+            echo "tag=dev" >> $GITHUB_OUTPUT        
+          fi
 
           #-------------- HOMOLOG --------------
 
