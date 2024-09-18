@@ -56,7 +56,7 @@ class TasksLocalDatasource implements ITasksDatasource {
 
       for (Map<String, dynamic> task in allTasks) {
         if (task["id"] == data["id"]) {
-          task["done"] = true;
+          task["done"] = false;
         }
       }
 

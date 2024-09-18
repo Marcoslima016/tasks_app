@@ -6,13 +6,10 @@ on:
       environment:
         required: true
         type: string
-    # secrets:
-    #   GCP_SA_KEY:
-    #     required: true
 
 env:
   DEPLOY_ENV: Dev
-  # HAS_HASH: false
+
 
 jobs:
   # #=========================================================================================================================================
@@ -48,15 +45,12 @@ jobs:
           #-------------- DEVELOP --------------
 
           if [[ ${{ inputs.environment }} == "develop" ]]; then
-            echo "tag=dev" >> $GITHUB_OUTPUT
-            echo "bucket=app-client-l4f-web-dev" >> $GITHUB_OUTPUT
-          fi
+            echo "tag=dev" >> $GITHUB_OUTPUT          fi
 
           #-------------- HOMOLOG --------------
 
           if [[ ${{ inputs.environment }} == "homolog" ]]; then
             echo "tag=homolog" >> $GITHUB_OUTPUT
-            echo "bucket=app-client-l4f-web-homolog" >> $GITHUB_OUTPUT
           fi
 
   #----------------------------------------------------------------------------------------
@@ -72,7 +66,6 @@ jobs:
       - uses: actions/checkout@v2
 
       # -----------------------------------------------
-
 
 
       # -----------------------------------------------
@@ -144,8 +137,6 @@ jobs:
 
       - name: Checkout do código
         uses: actions/checkout@v2
-        # with:
-        #   token:
 
       - run: ls -l ./
 
@@ -166,8 +157,6 @@ jobs:
         with:
           path: ./
           key: cache-project
-
-
 
       #----------- CACHE PUB_CACHE -----------
 
@@ -297,6 +286,10 @@ jobs:
       - run: echo "RUN DEPLOY"
       # - run: sleep 3m
       # - run: echo "finish!"
+
+
+
+
 
   #====================================================================================================================================
   #                                                                 WEB
